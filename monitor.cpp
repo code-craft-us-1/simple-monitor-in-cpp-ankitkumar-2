@@ -1,38 +1,44 @@
 #include "./monitor.h"
-#include <assert.h>
-#include <thread>
-#include <chrono>
-#include <iostream>
 using std::cout, std::flush, std::this_thread::sleep_for, std::chrono::seconds;
 
-int vitalsOk(float temperature, float pulseRate, float spo2) {
-  if (temperature > 102 || temperature < 95) {
-    cout << "Temperature is critical!\n";
-    for (int i = 0; i < 6; i++) {
+const int MAX_TEMP =102;
+const int MIN_TEMP= 95;
+const int MAX_PULSE = 100;
+const int MIN_PULSE = 60;
+const int MIN_SP02 = 90;
+
+void displayWarningPrompt()
+{
+for (int i = 0; i < 6; i++)
+ {
       cout << "\r* " << flush;
       sleep_for(seconds(1));
       cout << "\r *" << flush;
       sleep_for(seconds(1));
-    }
-    return 0;
-  } else if (pulseRate < 60 || pulseRate > 100) {
-    cout << "Pulse Rate is out of range!\n";
-    for (int i = 0; i < 6; i++) {
-      cout << "\r* " << flush;
-      sleep_for(seconds(1));
-      cout << "\r *" << flush;
-      sleep_for(seconds(1));
-    }
-    return 0;
-  } else if (spo2 < 90) {
-    cout << "Oxygen Saturation out of range!\n";
-    for (int i = 0; i < 6; i++) {
-      cout << "\r* " << flush;
-      sleep_for(seconds(1));
-      cout << "\r *" << flush;
-      sleep_for(seconds(1));
-    }
-    return 0;
+}
+  
+}
+
+void displayWarningMessage(const char *vital)
+{
+  cout<< vital << "is critical\n";
+  displayWarningPrompt();
+}
+
+bool isVitalOk(const char *vitals,float reading, float min, float max)
+{
+  if(reading>max || reading < min){
+    displayWarningMessage(vitals);
+    return false;
   }
-  return 1;
+  return true;
+}
+
+int vitalsOk(float temperature, float pulseRate, float spo2) {
+  
+  bool isTempratureOk = isVitalOk("Temprature", temperature,MIN_TEMP,MAX_TEMP);
+  bool isPulseRateOk = isVitalOk("PulseRate",pulseRate,MIN_PULSE,MAX_PULSE);
+  bool isSpo2Ok = isVitalOk("SPO2",spo2,MIN_SP02,NULL);
+
+  return isTempratureOk && isPulseRateOk && isSpo2Ok;
 }
