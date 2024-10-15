@@ -10,7 +10,7 @@ const int MAX_PULSE = 100;
 const int MIN_PULSE = 60;
 const int MIN_SP02 = 90;
 
-void displayWarningPrompt(){
+void displayWarningPrompt() {
 for (int i = 0; i < 6; i++){
   cout << "\r* " << flush;
   sleep_for(seconds(1));
@@ -19,12 +19,12 @@ for (int i = 0; i < 6; i++){
 } 
 }
 
-void displayWarningMessage(const char *vital){
+void displayWarningMessage(const char *vital) {
   cout<< vital << "is critical\n";
   displayWarningPrompt();
 }
 
-bool isVitalOk(const char *vitalType,float reading, float min, float max){
+bool isVitalOk(const char *vitalType,float reading, float min, float max) {
 if(reading>max || reading < min){
   displayWarningMessage(vitalType);
   return false;
@@ -32,7 +32,7 @@ if(reading>max || reading < min){
 return true;
 }
 
-int vitalsOk(float temperature, float pulseRate, float spo2){  
+int vitalsOk(float temperature, float pulseRate, float spo2) {  
   bool isTempratureOk = isVitalOk("Temprature", temperature,MIN_TEMP,MAX_TEMP);
   bool isPulseRateOk = isVitalOk("PulseRate",pulseRate,MIN_PULSE,MAX_PULSE);
   bool isSpo2Ok = isVitalOk("SPO2",spo2,MIN_SP02,NULL);
