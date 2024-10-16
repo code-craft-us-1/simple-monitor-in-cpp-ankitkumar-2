@@ -9,6 +9,7 @@ const int MIN_TEMP = 95;
 const int MAX_PULSE = 100;
 const int MIN_PULSE = 60;
 const int MIN_SP02 = 90;
+const int MAX_SP02 = 100;
 
 void displayWarningPrompt() {
 for (int i = 0; i < 6; i++) {
@@ -34,6 +35,6 @@ return true;
 int vitalsOk(float temperature, float pulseRate, float spo2) {
   bool isTempratureOk = isVitalOk("Temprature", temperature, MIN_TEMP, MAX_TEMP);
   bool isPulseRateOk = isVitalOk("PulseRate", pulseRate, MIN_PULSE, MAX_PULSE);
-  bool isSpo2Ok = isVitalOk("SPO2", spo2, MIN_SP02, NULL);
+  bool isSpo2Ok = isVitalOk("SPO2", spo2, MIN_SP02, MAX_SP02);
   return isTempratureOk && isPulseRateOk && isSpo2Ok;
 }
